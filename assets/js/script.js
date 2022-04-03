@@ -91,6 +91,8 @@ var generatePassword = function(){
 
     chars = chars - specialNum;
 
+    var confrimChars = window.confirm("You have selected "+lowercaseNum +" lowercase characters, " + uppercaseNum + " uppercase characters, " + numericNum + " numbers, and " + specialNum + " special characters.")
+
     if (chars == 0){
       break; 
     }else{
@@ -137,5 +139,3 @@ return password;
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
 
-// once all prompts are answered then a password will generate that matches the selected criteria 
-// display password in an alert or write it to the page. 
