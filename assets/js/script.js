@@ -4,12 +4,12 @@ const alphabet = alpha.map((x)=> String.fromCharCode(x));
 const numbers = Array.from(Array(10).keys()); 
 var special = " !#$%& '()*+,-./:;<=>?@[\]^_`{|}~"; 
 const specials = Array.from(special); 
+const types = ["Lowercase", "Uppercase", "Numbers", "Special Characters"]; 
+var characters = 7; 
+
 console.log(numbers);
 console.log(alphabet);
 console.log(specials);
-
-// used to know how many characters should each critera should be allotted 
-var customizations = 0; 
 
 // random number generator that takes in a min and max varible this will be used to pull from the array
 var randomNumber = function (max) {
@@ -17,24 +17,71 @@ var randomNumber = function (max) {
   return value; 
 };
 
+// make an ask function that will be used to ask how many charactes they'd like to use 
+var askTypeOfChars = function(type, chars){
+  
+  var designated = window.prompt("Out of your " + chars + " remaining characters how many would you like to designate as " + type + " ?");
+    if(designated > chars) {
+      window.alert("you must provide a valid answer. Please enter a number equal to or less than the number of characters you have remaining.")
+      askTypeOfChars(type, chars); 
+    }
+    return designated; 
+}; 
+// need to make sure you decrement the chars in the loop and start it out var chars = characters; 
+
+var passwordInputs = function(typeQuantity, arrType, arrLength){
+  var inputs = []; 
+  for(i = 0; i <= typeQuantity; i++){
+    var maxNum = arrLength -1; 
+    var numIdx = randomNumber(maxNum); 
+    var input = arrType[numIdx];
+    inputs.push(input);
+    console.log(input); 
+  }
+  return inputs; 
+};
+
 // Assignment code here
 var generatePassword = function(){
   console.log("generate password function works")
   // select length 
-  var promptLength = window.prompt("Please eneter the number of characters you'd like in your new password. Note Minimum number of charactes for a secure passowrd is 8. If eight enter '8' if twelve enter '12'"); 
-      promptLength =  Number(promptLength); 
-      console.log(promptLength); 
+  characters = window.prompt("Please eneter the number of characters you'd like in your new password. Note Minimum number of charactes for a secure passowrd is 8. If eight enter '8' if twelve enter '12'"); 
+  characters =  Number(characters); 
+  console.log(characters); 
 
-      if (promptLength < 8 || promptLength > 128){
-        window.alert("You must provide a valid answer. Please enter a number between 8 and 128");
-        return generatePassword() ; 
-      }
-  // add + 1 to customizations when the user responds with YES to any of the criteria below
-  // would you like lowercase use make lower to ensure charactes are lowercase 
-  // would you like uppercase use make upper to ensure characters are uppercase 
-  // would you like numeric values 
-  // would you like special characters 
+  if (characters < 8 || characters > 128){
+    window.alert("You must provide a valid answer. Please enter a number between 8 and 128");
+    return generatePassword() ; 
+  }
+  var chars = characters;
 
+  while(chars != 0){
+    var chars = characters;
+    window.alert("You have slected a password with " + characters + " characters. Please select the types and quantites of the characters. We have: Lowercase, Uppercase, Numbers, and Special characters");
+  
+    // would you like lowercase use make lower to ensure charactes are lowercase 
+    var lowercaseNum = askTypeOfChars("Lowercase characters",chars);
+
+      chars = chars - lowercaseNum;
+    // would you like uppercase - charactes are initialized as uppercase 
+    var uppercaseNum = askTypeOfChars("Uppercase characters", chars); 
+
+    chars = chars - uppercaseNum;
+    // would you like numeric values 
+    var numericNum = askTypeOfChars("Numebers", chars); 
+
+    chars = chars - numericNum; 
+    // would you like special characters  need to update so it just alerts that the remaining characters are special 
+    var specialNum = askTypeOfChars("Special characters", chars);; 
+
+    chars = chars - specialNum;
+
+    if (chars == 0){
+      break; 
+    }else{
+      window.alert("You must designate a type for each character in your password. With your current selection you have " + chars + " leftover. Please select the number of each type again");
+    }
+  }
   // take length and devide it by customizations so you can generate aproprietly (maybe this is too complicated)
 };
 
@@ -54,10 +101,5 @@ return password;
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
 
-// series of prompts 
-// set variables that will be user input 
-// select length min 8 max 128 
-// asked to include character types: Lowercase, Uppercase, numberic, and/or special characters 
-// validate selected input ; prompt again if no character type was selected 
 // once all prompts are answered then a password will generate that matches the selected criteria 
 // display password in an alert or write it to the page. 
