@@ -1,6 +1,7 @@
 // define variabels that can be used to generate password 
 const alpha = Array.from(Array(26)).map((e, i) => i + 65) ;
-const alphabet = alpha.map((x)=> String.fromCharCode(x));
+const alphabetU = alpha.map((x)=> String.fromCharCode(x));
+const alphabetL = alphabetU.map(alphabet => alphabet.toLowerCase()); 
 const numbers = Array.from(Array(10).keys()); 
 var special = " !#$%& '()*+,-./:;<=>?@[\]^_`{|}~"; 
 const specials = Array.from(special); 
@@ -8,7 +9,8 @@ const types = ["Lowercase", "Uppercase", "Numbers", "Special Characters"];
 var characters = 7; 
 
 console.log(numbers);
-console.log(alphabet);
+console.log(alphabetU);
+console.log(alphabetL);
 console.log(specials);
 
 // random number generator that takes in a min and max varible this will be used to pull from the array
@@ -40,6 +42,19 @@ var passwordInputs = function(typeQuantity, arrType, arrLength){
   }
   return inputs; 
 };
+
+var randomShuffle = function(array){
+  var currentIdx = array.length, tempValue, randomIdx; 
+  while (0 !== currentIdx){
+    randomIdx = Math.floor(Math.random() * currentIdx); 
+    currentIdx -= 1; 
+    tempValue = array[currentIdx]; 
+    array[currentIdx] = array[randomIdx];
+    array[randomIdx] = tempValue; 
+  }
+  return array; 
+}
+
 
 // Assignment code here
 var generatePassword = function(){
@@ -82,7 +97,28 @@ var generatePassword = function(){
       window.alert("You must designate a type for each character in your password. With your current selection you have " + chars + " leftover. Please select the number of each type again");
     }
   }
-  // take length and devide it by customizations so you can generate aproprietly (maybe this is too complicated)
+  // create an array of the different types of charactes we are going to use. 
+
+  var lowercaseIn = passwordInputs(lowercaseNum, alphabetL, alphabetL.length -1); 
+  var uppercaseIn = passwordInputs(uppercaseNum, alphabetU, alphabetU.length -1); 
+  var numericIn = passwordInputs(numericNum, numbers, numbers.length -1); 
+  var specialIn = passwordInputs(specialNum, specials, specials.length -1);
+  console.log(lowercaseIn);
+  console.log(uppercaseIn);
+  console.log(numericIn); 
+  console.log(specialIn);
+  // concat all of the lowercaseIN uppercaseIN numericIn and specialIN to one array 
+  var combinedIn = []
+  combinedIn = combinedIn.concat(lowercaseIn);
+  combinedIn = combinedIn.concat(uppercaseIn); 
+  combinedIn = combinedIn.concat(numericIn); 
+  combinedIn = combinedIn.concat(specialIn); 
+  //shuffling elements around to create a tougher password 
+  combinedIn = randomShuffle(combinedIn); 
+  // flattening array to one string 
+  var flatword = combinedIn.join(""); 
+  console.log(flatword);
+  return flatword;
 };
 
 // Get references to the #generate element
