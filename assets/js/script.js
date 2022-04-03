@@ -4,20 +4,31 @@ const alphabet = alpha.map((x)=> String.fromCharCode(x));
 const numbers = Array.from(Array(10).keys()); 
 var special = " !#$%& '()*+,-./:;<=>?@[\]^_`{|}~"; 
 const specials = Array.from(special); 
-
 console.log(numbers);
 console.log(alphabet);
 console.log(specials);
 
 // used to know how many characters should each critera should be allotted 
-//var customizations = 
+var customizations = 0; 
 
 // random number generator that takes in a min and max varible this will be used to pull from the array
+var randomNumber = function (max) {
+  var value = Math.floor(Math.random() * (max)); 
+  return value; 
+};
 
 // Assignment code here
 var generatePassword = function(){
   console.log("generate password function works")
   // select length 
+  var promptLength = window.prompt("Please eneter the number of characters you'd like in your new password. Note Minimum number of charactes for a secure passowrd is 8. If eight enter '8' if twelve enter '12'"); 
+      promptLength =  Number(promptLength); 
+      console.log(promptLength); 
+
+      if (promptLength < 8 || promptLength > 128){
+        window.alert("You must provide a valid answer. Please enter a number between 8 and 128");
+        return generatePassword() ; 
+      }
   // add + 1 to customizations when the user responds with YES to any of the criteria below
   // would you like lowercase use make lower to ensure charactes are lowercase 
   // would you like uppercase use make upper to ensure characters are uppercase 
